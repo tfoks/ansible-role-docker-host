@@ -41,11 +41,11 @@
   dpkg_selections:
     name: docker-ce-cli
     selection: hold
-#- name: Ensure that Docker is enabled and running
-#  service:
-#    name: docker
-#    enabled: yes
-#    state: started
+- name: Ensure that Docker is enabled and running
+  service:
+    name: docker
+    enabled: yes
+    state: started
 - name: Install bash completion
   apt:
     name:

@@ -5,7 +5,7 @@ driver:
   name: docker
 platforms:
   - name: ubuntu-18
-    image: molecule-ubuntu1804:latest
+    image: geerlingguy/docker-ubuntu1804-ansible:latest
     pre_build_image: true
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
