@@ -1,0 +1,61 @@
+---
+
+- name: Ensure that old Docker versions are removed
+  yum:
+    name:
+      - docker
+      - docker-client
+      - docker-client-latest
+      - docker-common
+      - docker-latest
+      - docker-latest-logrotate
+      - docker-logrotate
+      - docker-engine
+    state: absent
+- name: Add Docker’s official GPG key
+  rpm_key:
+    key: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+- name: Add Docker's repository
+  get_url:
+    url: https://download.docker.com/linux/centos/docker-ce.repo
+    dest: /etc/yum.repos.d/docker-ce.repo
+    mode: '0644'
+- name: Install Docker
+  yum:
+    name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+    state: present
+- name: Ensure that Docker is enabled and running
+  service:
+    name: docker
+    enabled: yes
+    state: started
+- name: Install bash completion
+  yum:
+    name:
+      - bash-completion
+    state: present
+- name: Add Docker's bash completion
+  get_url:
+    url: https://raw.githubusercontent.com/docker/docker-ce/master/components/cli/contrib/completion/bash/docker
+    dest: /etc/bash_completion.d/docker-completion.sh
+    mode: '0644'
+- name: Add admins to docker group
+  user:
+    groups: docker
+    append: yes
+    name: "{{ item }}"
+  loop: "{{ admin_accounts }}"
+- name: Install Python packages
+  yum:
+    name:
+      - python3
+      - python3-pip
+    state: present
+# this requires prior successful installation of Python
+- name: Install Docker SDK python package
+  pip:
+    name: docker
