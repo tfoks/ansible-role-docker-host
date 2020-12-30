@@ -1,2 +1,5 @@
 ---
 # defaults file for docker_host
+docker_version: 5:19.03.*
+
+admin_accounts: []
